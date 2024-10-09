@@ -26,10 +26,32 @@ jobs:
       - name: "Run Coverage test"
         run: coverage run -m pytest
       - name: "Upload coverage"
-        run: ls -a
-      - name: "Upload coverage"
         uses: actions/upload-artifact@v4
         with:
           name: coverage-file
           path: .coverage
           retention-days: 1
+          include-hidden-files: true
+  coverage_report:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.12.3'
+      - name: "Install depenencies"
+        run: pip install coverage
+      - name: "Download coverage"
+        uses: actions/download-artifact@v2
+        with:
+          name: coverage-file
+      - name: "Coverage report"
+        run: coverage report
+      - name: "Coverage XML"
+        run: coverage xml
+      - name: "Upload coverage xml"
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+          retention-days: 14
