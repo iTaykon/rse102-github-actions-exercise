@@ -1,4 +1,4 @@
-name: CI workflow
+name: RSE 102 CI/CD
 
 on: [push]
 
