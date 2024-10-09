@@ -1,0 +1,30 @@
+name: CI workflow
+
+on: [push]
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.12.3'
+      - name: "Install style checker"
+        run: pip install black
+      - name: "Run style check"
+        run: black --check .
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.12.3'
+      - name: "Install pytest"
+        run: pip install pytest
+      - name: "Install coverage"
+        run: pip install coverage
+      - name: "Run style check"
+        run: coverage run -m pytest
